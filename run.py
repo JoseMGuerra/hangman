@@ -1,6 +1,7 @@
 # Imported modules
 import sys
 import time
+import csv
 
 FILE_PATH = "assets/py/user_details.csv"
 
@@ -44,7 +45,39 @@ def register():
     add user to user_details file or creates new file if it doesn't exits.
 
     """
-    pass
+    clear()
+    space()
+    # open the file where users details will be appended or creates a new file if it doesn't exits
+    with open(FILE_PATH, "a", newline="") as f:
+        writer = csv.writer(f)
+
+        # takes user inputs
+        username = str(input("Enter you username: ")).strip().title()
+        password = str(input("Enter password: ")).strip()
+
+        while len(username) >= 4 and "#" in password:
+            space()
+            print("valid username and password.")
+            pause(1.1)
+
+            writer.writerow([username, password])  # write user details to file
+            space()
+            print("Registering your details....")
+            pause(1.1)
+            space()
+            print("Please wait...")
+            pause(1.5)
+            space()
+            print("Registration completed successfully.")
+            pause(1.1)
+            space()
+            # print("Please restart the program for changes to take effect.")
+            # space()
+            # quit()
+            break
+        else:  # TODO -> DOESN'T VALIDATE PROPERLY, Y GOES BACK TO MAIN MENU ????
+            print(
+                "Username MUST be at least 4 characters and Password MUST contain '#' key .")
 
 
 def login():
