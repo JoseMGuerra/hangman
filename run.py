@@ -1,5 +1,6 @@
 # Imported modules
 from headers import print_header
+from hangman_pics import hangman_pics
 from words import WORDS
 import random
 import sys
@@ -100,7 +101,9 @@ def register():
         writer = csv.writer(f)
 
         # takes user inputs
-        username = str(input("Enter you username: (min 4 characters, alphanumeric)")).strip().title()
+        username = str(input("Enter you username: \
+                 (min 4 characters,\
+                 alphanumeric)")).strip().title()
         password = str(input("Enter password: (contains '!')")).strip()
 
         while len(username) >= 4 and "!" in password:
