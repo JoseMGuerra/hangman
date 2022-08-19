@@ -3,7 +3,7 @@ import sys
 import time
 import csv
 
-FILE_PATH = "assets/py/user_details.csv"
+DETAILS_FILE_PATH = "assets/py/user_details.csv"
 
 
 def quit():
@@ -46,9 +46,10 @@ def register():
 
     """
     clear()
+    # register_header()
     space()
     # open the file where users details will be appended or creates a new file if it doesn't exits
-    with open(FILE_PATH, "a", newline="") as f:
+    with open(DETAILS_FILE_PATH, "a", newline="") as f:
         writer = csv.writer(f)
 
         # takes user inputs
@@ -71,9 +72,6 @@ def register():
             print("Registration completed successfully.")
             pause(1.1)
             space()
-            # print("Please restart the program for changes to take effect.")
-            # space()
-            # quit()
             break
         else:  # TODO -> DOESN'T VALIDATE PROPERLY, Y GOES BACK TO MAIN MENU ????
             print(
@@ -84,13 +82,55 @@ def login():
     """
     Get and Validates user login details
     """
-    pass
+    clear()
+    # login_header()
+    space()
+    print("Please enter Username and Password")
+    space()
+    access_granted = False
+
+    while access_granted == False:
+        with open(DETAILS_FILE_PATH, "r") as f:
+            space()
+
+            username = input("Enter your username: ").strip().title()
+            password = input("Enter your password: ").strip()
+
+            reader = csv.reader(f)
+
+            for row in reader:
+                for cell in row:
+
+                    if cell == username and row[1] == password:
+                        access_granted = True
+
+                    else:
+                        break
+
+            if access_granted == False:
+                print("Wrong username or password, please try again")
+            else:
+                space()
+                print("Access granted.")
+                pause(2.1)
+                space()
+                print(f"Welcome {username}!")
+                pause(2.1)
+                space()
+                print("You are being redirected to our game menu...")
+                space()
+                pause(2.1)
+                print("Please wait...")
+                space()
+                pause(2.1)
+                # game_menu(username)
 
 
 def main_menu():
     """
     Main menu, register and login.
     """
+    # main_menu_header()
     choice = ""
     while choice != "3":
         print("""
