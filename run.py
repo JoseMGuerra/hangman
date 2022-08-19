@@ -39,6 +39,39 @@ def pause(s):
     time.sleep(s)
 
 
+def game_menu(username):
+    """
+    Game menu where user choices to play or quit the game
+    """
+    clear()
+    # game_menu_header()  # prints the game menu header
+
+    print("""
+
+        1. Press 1 to play
+        2. Press 2 to Quit
+
+    """)
+    choice = input(f"What would you like to do? ").strip()
+    space()
+
+    if choice == "1":
+        print(f"Excellent {username} , let's play!")
+        space()
+        print("Loading the game...")
+        pause(1.1)
+        space()
+        pause(1.1)
+        print("Please wait...")
+        pause(2.1)
+        # play(username)
+    elif choice == "2":
+        pause(1)
+        print(f"Goodbye {username}, have a nice day!")
+        quit()
+    else:
+        print("Enter a valid choice.")  # validates user choice
+
 def register():
     """
     Get username and password input from the user, validates user inputs.
