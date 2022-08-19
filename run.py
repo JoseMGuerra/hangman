@@ -1,4 +1,5 @@
 # Imported modules
+from headers import print_header
 import sys
 import time
 import csv
@@ -44,7 +45,7 @@ def game_menu(username):
     Game menu where user choices to play or quit the game
     """
     clear()
-    # game_menu_header()  # prints the game menu header
+    print_header("game_menu")
 
     print("""
 
@@ -72,6 +73,7 @@ def game_menu(username):
     else:
         print("Enter a valid choice.")  # validates user choice
 
+
 def register():
     """
     Get username and password input from the user, validates user inputs.
@@ -79,7 +81,7 @@ def register():
 
     """
     clear()
-    # register_header()
+    print_header("register")
     space()
     # open the file where users details will be appended or creates a new file if it doesn't exits
     with open(DETAILS_FILE_PATH, "a", newline="") as f:
@@ -116,7 +118,7 @@ def login():
     Get and Validates user login details
     """
     clear()
-    # login_header()
+    print_header("login")
     space()
     print("Please enter Username and Password")
     space()
@@ -156,14 +158,14 @@ def login():
                 print("Please wait...")
                 space()
                 pause(2.1)
-                # game_menu(username)
+                game_menu(username)
 
 
 def main_menu():
     """
     Main menu, register and login.
     """
-    # main_menu_header()
+    print_header("main")
     choice = ""
     while choice != "3":
         print("""
