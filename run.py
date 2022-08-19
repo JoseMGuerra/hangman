@@ -1,10 +1,21 @@
 # Imported modules
 from headers import print_header
+from words import WORDS
+import random
 import sys
 import time
 import csv
 
 DETAILS_FILE_PATH = "assets/py/user_details.csv"
+words = WORDS
+
+
+def get_random_word(words):
+    """ Chose a word randomly from the words module """
+    word = random.choice(words)
+
+    word = random.choice(words)
+    return word.upper()
 
 
 def quit():
@@ -53,7 +64,7 @@ def game_menu(username):
         2. Press 2 to Quit
 
     """)
-    choice = input(f"What would you like to do? ").strip()
+    choice = input("What would you like to do? ").strip()
     space()
 
     if choice == "1":
@@ -83,15 +94,16 @@ def register():
     clear()
     print_header("register")
     space()
-    # open the file where users details will be appended or creates a new file if it doesn't exits
+    # open the file where users details will be appended\
+    #  or creates a new file if it doesn't exits
     with open(DETAILS_FILE_PATH, "a", newline="") as f:
         writer = csv.writer(f)
 
         # takes user inputs
-        username = str(input("Enter you username: ")).strip().title()
-        password = str(input("Enter password: ")).strip()
+        username = str(input("Enter you username: (min 4 characters, alphanumeric)")).strip().title()
+        password = str(input("Enter password: (contains '!')")).strip()
 
-        while len(username) >= 4 and "#" in password:
+        while len(username) >= 4 and "!" in password:
             space()
             print("valid username and password.")
             pause(1.1)
@@ -108,9 +120,11 @@ def register():
             pause(1.1)
             space()
             break
-        else:  # TODO -> DOESN'T VALIDATE PROPERLY, Y GOES BACK TO MAIN MENU ????
+        else:  # TODO -> DOESN'T VALIDATE PROPERLY,\
+            # Y GOES BACK TO MAIN MENU ????
             print(
-                "Username MUST be at least 4 characters and Password MUST contain '#' key .")
+                "Username MUST be at least 4 characters \
+                    and Password MUST contain '#' key .")
 
 
 def login():
