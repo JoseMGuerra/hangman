@@ -57,34 +57,35 @@ def game_menu(username):
     """
     Game menu where user choices to play or quit the game
     """
-    clear()
-    print_header("game_menu")
-
-    print("""
-
+    choice = ""
+    while True:
+        clear()
+        print_header("game_menu")
+        print("""
         1. Press 1 to play
         2. Press 2 to Quit
-
-    """)
-    choice = input("What would you like to do? ").strip()
-    space()
-
-    if choice == "1":
-        print(f"Excellent {username} , let's play!")
+        """)
+        choice = input("What would you like to do? ").strip()
         space()
-        print("Loading the game...")
-        pause(1.1)
-        space()
-        pause(1.1)
-        print("Please wait...")
-        pause(2.1)
-        play(username)
-    elif choice == "2":
-        pause(1)
-        print(f"Goodbye {username}, have a nice day!")
-        quit()
-    else:
-        print("Enter a valid choice.")  # validates user choice
+        if choice == "" or choice == " ":
+            continue
+        if choice == "1":
+            print(f"Excellent {username} , let's play!")
+            space()
+            print("Loading the game...")
+            pause(1.1)
+            space()
+            pause(1.1)
+            print("Please wait...")
+            pause(2.1)
+            play(username)
+        if choice == "2":
+            pause(1)
+            print(f"Goodbye {username}, have a nice day!")
+            space()
+            pause(2.5)
+            clear()
+            quit()
 
 
 def play(username):
@@ -133,7 +134,8 @@ def play(username):
             else:
                 lives = lives - 1  # takes away a live
 
-        elif user_letter in guessed_letters:  # check if user already guessed a letter
+        elif user_letter in guessed_letters:  # check if user already 
+            # guessed a letter
             space()
             print("You have already used that letter, try another one.")
 
@@ -147,13 +149,31 @@ def play(username):
         print(hangman_pics[lives])
         space()
         print(f"Sorry, you just died!. The word was {word}")
-        # play_again(username)  # play again
+        play_again(username)  # play again
     else:
         space()
         print(f"Congratulations!!. You nailed {username}!!")
         space()
         print(f"The word is: {word}")
-        # play_again(username)
+        play_again(username)
+
+
+def play_again(username):
+    """
+    Prompt user if would like to play another round
+    """
+    space()
+    another_round = input(
+        "Would you like to play again : Y / N ").upper()
+    if another_round == "y" or another_round == "Y":
+        play(username)
+    else:
+        clear()
+        space()
+        print(f"Thank you for playing, have a nice day {username}!")
+        space()
+        pause(1.1)
+        quit()
 
 
 def register():
@@ -169,13 +189,16 @@ def register():
     #  or creates a new file if it doesn't exits
     with open(DETAILS_FILE_PATH, "a", newline="") as f:
         writer = csv.writer(f)
+        while True:
+            # takes user inputs
+            username = str(input("(min 4 characters alphanumeric)\nEnter you username:")).strip().title()
+            space()
+            password = str(input("(MUST contain '!')\nEnter password: ")).strip()
 
-        # takes user inputs
-        username = str(input("(min 4 characters alphanumeric)\nEnter you username:")).strip().title()
-        space()
-        password = str(input("(MUST contain '!')\nEnter password: ")).strip()
+            if len(username) < 4 and not username.isalpha() or "!" not in password:
+                print("Input not valid, please try again.")
+                continue
 
-        while len(username) >= 4 and "!" in password:
             space()
             print("valid username and password.")
             pause(1.1)
@@ -192,9 +215,7 @@ def register():
             pause(1.1)
             space()
             break
-        else:
-            print("Input not valid, please try again.")
-
+            
 
 def login():
     """
@@ -248,9 +269,10 @@ def main_menu():
     """
     Main menu, register and login.
     """
-    print_header("main")
     choice = ""
     while choice != "3":
+        clear()
+        print_header("main")
         print("""
         1. Press 1 to Register
         2. Press 2 to Login
@@ -263,6 +285,7 @@ def main_menu():
         elif choice == "2":
             login()
         elif choice == "3":
+            print("Goodbye!.")
             quit()
         else:
             print("Sorry, that's not a valid option. Please try again.")
