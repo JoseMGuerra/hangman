@@ -3,6 +3,7 @@ from headers import print_header
 from hangman_pics import hangman_pics
 from words import WORDS
 import random
+import string
 import sys
 import time
 import csv
@@ -77,13 +78,82 @@ def game_menu(username):
         pause(1.1)
         print("Please wait...")
         pause(2.1)
-        # play(username)
+        play(username)
     elif choice == "2":
         pause(1)
         print(f"Goodbye {username}, have a nice day!")
         quit()
     else:
         print("Enter a valid choice.")  # validates user choice
+
+
+def play(username):
+    """
+    Game logic function, get a random word and set a secret word
+    Add guessed letters to a set so it only displays it just once
+    While number of lives > 0 or the word is guessed  will loop.
+    """
+    clear()
+    print_header("hangman")  # prints the hangman header
+
+    word = get_random_word(words)
+    alphabet = set(string.ascii_uppercase)
+
+    print(word)  # SECRET WORD### delete THIS ##########******************
+
+    secret_word = set(word)  # letters in the secret words
+    guessed_letters = set()  # list of non repeated letters\
+    # the user has guessed
+
+    lives = 7  # while loop flag
+
+    while len(secret_word) > 0 and lives > 0:
+        space()
+        print("You have used these letters: ", " ".join(
+            guessed_letters))  # print used letters
+        space()
+        print(f"You have {lives} lives left.")  # print live left
+
+        # what secret word is ( ie S_CR_T)
+        word_list = [
+            letter if letter in guessed_letters else "_" for letter in word]
+        print(hangman_pics[lives])
+        space()
+        print("Secret word: ", " ".join(word_list))
+
+        # transform to uppercase so all letters have the same ascii value
+        # getting  user guesses
+        space()
+        user_letter = input("Guess a letter: ").upper()
+
+        if user_letter in alphabet - guessed_letters:
+            guessed_letters.add(user_letter)
+            if user_letter in secret_word:
+                secret_word.remove(user_letter)
+            else:
+                lives = lives - 1  # takes away a live
+
+        elif user_letter in guessed_letters:  # check if user already guessed a letter
+            space()
+            print("You have already used that letter, try another one.")
+
+        else:
+            space()
+            print("Invalid character, Please try again.")
+
+    # when len(secret_word) == 0 OR when lives ==0 ->
+    if lives == 0:
+        clear()
+        print(hangman_pics[lives])
+        space()
+        print(f"Sorry, you just died!. The word was {word}")
+        # play_again(username)  # play again
+    else:
+        space()
+        print(f"Congratulations!!. You nailed {username}!!")
+        space()
+        print(f"The word is: {word}")
+        # play_again(username)
 
 
 def register():
@@ -95,16 +165,15 @@ def register():
     clear()
     print_header("register")
     space()
-    # open the file where users details will be appended\
+    # open the file where users details will be appended\n
     #  or creates a new file if it doesn't exits
     with open(DETAILS_FILE_PATH, "a", newline="") as f:
         writer = csv.writer(f)
 
         # takes user inputs
-        username = str(input("Enter you username: \
-                 (min 4 characters,\
-                 alphanumeric)")).strip().title()
-        password = str(input("Enter password: (contains '!')")).strip()
+        username = str(input("(min 4 characters alphanumeric)\nEnter you username:")).strip().title()
+        space()
+        password = str(input("(MUST contain '!')\nEnter password: ")).strip()
 
         while len(username) >= 4 and "!" in password:
             space()
@@ -123,11 +192,8 @@ def register():
             pause(1.1)
             space()
             break
-        else:  # TODO -> DOESN'T VALIDATE PROPERLY,\
-            # Y GOES BACK TO MAIN MENU ????
-            print(
-                "Username MUST be at least 4 characters \
-                    and Password MUST contain '#' key .")
+        else:
+            print("Input not valid, please try again.")
 
 
 def login():
