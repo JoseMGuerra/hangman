@@ -43,13 +43,120 @@ def space():
     print("")
 
 
-def pause(s):
+def pause(seconds):
     """
     Pause the screen for nth seconds
     better user experience
     "time.sleep(s)"
     """
-    time.sleep(s)
+    time.sleep(seconds)
+
+
+def register():
+    """
+    Get username and password input from the user, validates user inputs.
+    add user to user_details file or creates new file if it doesn't exits.
+
+    """
+    clear()
+    print_header("register")
+    space()
+    while True:
+        # takes user inputs
+        username = str(
+            input("(min 4 characters alphanumeric)\
+                \n\nEnter you username:\n")).strip().title()
+        space()
+        password = str(
+            input("(MUST contain '!')\n\nEnter password: \n")).strip()
+
+        # validates if username if already taken.
+        usernames = []
+        with open(DETAILS_FILE_PATH) as f:
+            reader = csv.reader(f)
+            next(reader)
+            for row in reader:
+                for field in row:
+                    usernames.append(row[0])
+        if username in usernames:
+            space()
+            print("### Sorry username already taken. ###")
+            space()
+            pause(1.5)
+            continue
+
+        # open the file where users details will be appended\n
+        #  or creates a new file if it doesn't exits
+        with open(DETAILS_FILE_PATH, "a", newline="") as f:
+            writer = csv.writer(f)
+
+            if len(username) < 4 and not username.isalpha(
+            ) or "!" not in password:
+                print("Input not valid, please try again.")
+                continue
+
+            space()
+            print("valid username and password.")
+            pause(1.1)
+
+            writer.writerow([username, password])  # write user details to file
+            space()
+            print("Registering your details....")
+            pause(1.1)
+            space()
+            print("Please wait...")
+            pause(1.5)
+            space()
+            print("Registration completed successfully.")
+            pause(1.1)
+            space()
+            break
+
+
+def login():
+    """
+    Get and Validates user login details
+    """
+    clear()
+    print_header("login")
+    space()
+    print("Please enter Username and Password")
+    space()
+    access_granted = False
+
+    while access_granted is False:
+        with open(DETAILS_FILE_PATH, "r") as f:
+            space()
+
+            username = input("Enter your username: \n").strip().title()
+            password = input("Enter your password: \n").strip()
+
+            reader = csv.reader(f)
+
+            for row in reader:
+                for cell in row:
+                    if cell == username and row[1] == password:
+                        access_granted = True
+                    else:
+                        break
+
+            if access_granted is False:
+                print("Wrong username or password, please try again")
+            else:
+                space()
+                print("Access granted.")
+                pause(2.1)
+                space()
+                print(f"Welcome {username}!")
+                pause(2.1)
+                space()
+                print("You are being redirected to our game menu...")
+                space()
+                pause(2.1)
+                print("Please wait...")
+                space()
+                pause(2.1)
+                game_menu(username)
 
 
 def game_menu(username):
@@ -67,7 +174,7 @@ def game_menu(username):
         2. Press 2 to Quit
         """)
         space()
-        choice = input("What would you like to do? ").strip()
+        choice = input("What would you like to do? \n").strip()
         space()
         if choice == "" or choice == " ":
             print("Try selecting 1 OR 2")
@@ -129,7 +236,7 @@ def play(username):
         # transform to uppercase so all letters have the same ascii value
         # getting  user guesses
         space()
-        user_letter = input("Guess a letter: ").upper()
+        user_letter = input("Guess a letter: \n").upper()
 
         if user_letter in alphabet - guessed_letters:
             guessed_letters.add(user_letter)
@@ -168,7 +275,7 @@ def play_again(username):
     """
     space()
     another_round = input(
-        "Would you like to play again : Y / N ").upper()
+        "Would you like to play again : Y / N \n").upper()
     if another_round == "y" or another_round == "Y":
         play(username)
     else:
@@ -177,113 +284,8 @@ def play_again(username):
         print(f"Thank you for playing, have a nice day {username}!")
         space()
         pause(1.1)
+        clear()
         quit()
-
-
-def register():
-    """
-    Get username and password input from the user, validates user inputs.
-    add user to user_details file or creates new file if it doesn't exits.
-
-    """
-    clear()
-    print_header("register")
-    space()
-    while True:
-        # takes user inputs
-        username = str(
-            input("(min 4 characters alphanumeric)\n\nEnter you username:")).strip().title()
-        space()
-        password = str(
-            input("(MUST contain '!')\n\nEnter password: ")).strip()
-
-        # validates if username if already taken.
-        usernames = []
-        with open(DETAILS_FILE_PATH) as f:
-            reader = csv.reader(f)
-            next(reader)
-            for row in reader:
-                for field in row:
-                    usernames.append(row[0])
-        if username in usernames:
-            space()
-            print("### Sorry username already taken. ###")
-            space()
-            pause(1.5)
-            continue
-
-        # open the file where users details will be appended\n
-        #  or creates a new file if it doesn't exits
-        with open(DETAILS_FILE_PATH, "a", newline="") as f:
-            writer = csv.writer(f)
-
-            if len(username) < 4 and not username.isalpha() or "!" not in password:
-                print("Input not valid, please try again.")
-                continue
-
-            space()
-            print("valid username and password.")
-            pause(1.1)
-
-            writer.writerow([username, password])  # write user details to file
-            space()
-            print("Registering your details....")
-            pause(1.1)
-            space()
-            print("Please wait...")
-            pause(1.5)
-            space()
-            print("Registration completed successfully.")
-            pause(1.1)
-            space()
-            break
-
-
-def login():
-    """
-    Get and Validates user login details
-    """
-    clear()
-    print_header("login")
-    space()
-    print("Please enter Username and Password")
-    space()
-    access_granted = False
-
-    while access_granted is False:
-        with open(DETAILS_FILE_PATH, "r") as f:
-            space()
-
-            username = input("Enter your username: ").strip().title()
-            password = input("Enter your password: ").strip()
-
-            reader = csv.reader(f)
-
-            for row in reader:
-                for cell in row:
-
-                    if cell == username and row[1] == password:
-                        access_granted = True
-                    else:
-                        break
-
-            if access_granted is False:
-                print("Wrong username or password, please try again")
-            else:
-                space()
-                print("Access granted.")
-                pause(2.1)
-                space()
-                print(f"Welcome {username}!")
-                pause(2.1)
-                space()
-                print("You are being redirected to our game menu...")
-                space()
-                pause(2.1)
-                print("Please wait...")
-                space()
-                pause(2.1)
-                game_menu(username)
 
 
 def main_menu():
@@ -303,7 +305,7 @@ def main_menu():
     3. Press 3 to Quit
     """)
         space()
-        choice = input()
+        choice = input("\n")
 
         if choice == "1":
             register()
