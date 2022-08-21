@@ -189,15 +189,33 @@ def register():
     clear()
     print_header("register")
     space()
-    # open the file where users details will be appended\n
-    #  or creates a new file if it doesn't exits
-    with open(DETAILS_FILE_PATH, "a", newline="") as f:
-        writer = csv.writer(f)
-        while True:
-            # takes user inputs
-            username = str(input("(min 4 characters alphanumeric)\nEnter you username:")).strip().title()
+    while True:
+        # takes user inputs
+        username = str(
+            input("(min 4 characters alphanumeric)\n\nEnter you username:")).strip().title()
+        space()
+        password = str(
+            input("(MUST contain '!')\n\nEnter password: ")).strip()
+
+        # validates if username if already taken.
+        usernames = []
+        with open(DETAILS_FILE_PATH) as f:
+            reader = csv.reader(f)
+            next(reader)
+            for row in reader:
+                for field in row:
+                    usernames.append(row[0])
+        if username in usernames:
             space()
-            password = str(input("(MUST contain '!')\nEnter password: ")).strip()
+            print("### Sorry username already taken. ###")
+            space()
+            pause(1.5)
+            continue
+
+        # open the file where users details will be appended\n
+        #  or creates a new file if it doesn't exits
+        with open(DETAILS_FILE_PATH, "a", newline="") as f:
+            writer = csv.writer(f)
 
             if len(username) < 4 and not username.isalpha() or "!" not in password:
                 print("Input not valid, please try again.")
@@ -283,7 +301,7 @@ def main_menu():
     2. Press 2 to Login
 
     3. Press 3 to Quit
-        """)
+    """)
         space()
         choice = input()
 
