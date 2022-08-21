@@ -9,14 +9,13 @@ import time
 import csv
 
 DETAILS_FILE_PATH = "assets/py/user_details.csv"
-words = WORDS
 
 
-def get_random_word(words):
-    """ Chose a word randomly from the words module """
-    word = random.choice(words)
+def get_random_word(WORDS):
+    """ Chose a word randomly from the WORDS module """
+    word = random.choice(WORDS)
 
-    word = random.choice(words)
+    word = random.choice(WORDS)
     return word.upper()
 
 
@@ -61,13 +60,18 @@ def game_menu(username):
     while True:
         clear()
         print_header("game_menu")
+        space()
         print("""
         1. Press 1 to play
+
         2. Press 2 to Quit
         """)
+        space()
         choice = input("What would you like to do? ").strip()
         space()
         if choice == "" or choice == " ":
+            print("Try selecting 1 OR 2")
+            pause(2)
             continue
         if choice == "1":
             print(f"Excellent {username} , let's play!")
@@ -97,12 +101,12 @@ def play(username):
     clear()
     print_header("hangman")  # prints the hangman header
 
-    word = get_random_word(words)
+    word = get_random_word(WORDS)
     alphabet = set(string.ascii_uppercase)
 
     print(word)  # SECRET WORD### delete THIS ##########******************
 
-    secret_word = set(word)  # letters in the secret words
+    secret_word = set(word)  # letters in the secret word
     guessed_letters = set()  # list of non repeated letters\
     # the user has guessed
 
@@ -134,7 +138,7 @@ def play(username):
             else:
                 lives = lives - 1  # takes away a live
 
-        elif user_letter in guessed_letters:  # check if user already 
+        elif user_letter in guessed_letters:  # check if user already
             # guessed a letter
             space()
             print("You have already used that letter, try another one.")
@@ -215,7 +219,7 @@ def register():
             pause(1.1)
             space()
             break
-            
+
 
 def login():
     """
@@ -228,7 +232,7 @@ def login():
     space()
     access_granted = False
 
-    while access_granted == False:
+    while access_granted is False:
         with open(DETAILS_FILE_PATH, "r") as f:
             space()
 
@@ -242,11 +246,10 @@ def login():
 
                     if cell == username and row[1] == password:
                         access_granted = True
-
                     else:
                         break
 
-            if access_granted == False:
+            if access_granted is False:
                 print("Wrong username or password, please try again")
             else:
                 space()
@@ -273,11 +276,15 @@ def main_menu():
     while choice != "3":
         clear()
         print_header("main")
+        space()
         print("""
-        1. Press 1 to Register
-        2. Press 2 to Login
-        3. Press 3 to Quit
+    1. Press 1 to Register
+
+    2. Press 2 to Login
+
+    3. Press 3 to Quit
         """)
+        space()
         choice = input()
 
         if choice == "1":
@@ -285,10 +292,16 @@ def main_menu():
         elif choice == "2":
             login()
         elif choice == "3":
-            print("Goodbye!.")
+            pause(1)
+            print("Goodbye, have a good day!")
+            space()
+            pause(2.5)
+            clear()
             quit()
         else:
-            print("Sorry, that's not a valid option. Please try again.")
+            print("Sorry, I didn't understand that. Please try again.")
+            pause(2)
+            clear()
 
 
 if __name__ == "__main__":
