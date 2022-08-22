@@ -95,6 +95,16 @@ The last update to this file was: **August 22, 2022**
 </details>
 
 -----
+## Design
+
+<details><summary>Flow charts</summary>
+
+- ![application flow chart](readme_images/app_flowchart.webp)
+- ![game flow chart](readme_images/game_flowchart.webp)
+
+</details>
+
+-----
 ## Technologies
 
 
@@ -134,6 +144,12 @@ The last update to this file was: **August 22, 2022**
 <summary> Result for run.py</summary>
 
 - ![PEP8_run.py](readme_images/Pep8_run.py.webp)    
+</details>
+
+<details><summary>Testing table</summary>
+
+- ![testing table](readme_images/test_table1.webp)
+- ![testing table](readme_images/test_table2.webp)
 </details>
 
 -----
