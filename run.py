@@ -178,7 +178,7 @@ def game_menu(username):
         space()
         if choice == "" or choice == " ":
             print("Try selecting 1 OR 2")
-            pause(2)
+            pause(10)
             continue
         if choice == "1":
             print(f"Excellent {username} , let's play!")
@@ -211,7 +211,7 @@ def play(username):
     word = get_random_word(WORDS)
     alphabet = set(string.ascii_uppercase)
 
-    print(word)  # SECRET WORD### delete THIS ##########******************
+    # print(word)  # SECRET WORD### delete THIS ##########******************
 
     secret_word = set(word)  # letters in the secret word
     guessed_letters = set()  # list of non repeated letters\
