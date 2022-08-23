@@ -4,17 +4,15 @@
 
 # PP3 - Hangman in Python
 
------
 ## About
 
 
-Hangman is a Python3 Command Line application. It's a guessing game where the User tries to guess a random  word in a certain number of guesses.
+Hangman Python3 Command Line application. It's a guessing game where the User tries to guess a random  word in a certain number of guesses.
 
 The last update to this file was: **August 22, 2022**
 
 [You can find the live project here](https://hangman-py.herokuapp.com/)
 
------
 ## Responsiveness
 
 
@@ -23,13 +21,12 @@ The last update to this file was: **August 22, 2022**
 ![Am i responsive](readme_images/Am_i_responsive.webp)
 </details>
 
------
 ## How to use the App
 
+After the user has registered or logged-in in the main menu the user is brought to the game. A random word from a word bank is generated every new game. The aim is to guess a secret word before spending the 7 lives given. If the user guesses the word before that he/she wins the game, if not the user dies and losses.
 
 [Hangman game wikipedia](https://en.wikipedia.org/wiki/Hangman_(game))
 
------
 ## Features
 
 
@@ -94,7 +91,6 @@ The last update to this file was: **August 22, 2022**
 
 </details>
 
------
 ## Design
 
 <details><summary>Flow charts</summary>
@@ -104,7 +100,6 @@ The last update to this file was: **August 22, 2022**
 
 </details>
 
------
 ## Technologies
 
 
@@ -129,13 +124,14 @@ The last update to this file was: **August 22, 2022**
 - [Visual Studio Code](https://code.visualstudio.com/)
   - VS Code for short is the integrated development environment (IDE) software used to build the website.
 - [Lucidchart](https://www.lucidchart.com/pages/)
-  - Lucidchart was used to create a flowchart of the project.
+  - Lucidchart was used to create flowcharts of the project.
 - [Heroku](https://id.heroku.com)
   - Used to deploy the application and provides an environment where the code can be executed.
+- [Image converter](https://www.simpleimageresizer.com/)
+  - Used to resize the images used in the project.
 
 </details>
 
------
 ## Testing
 
 
@@ -152,10 +148,8 @@ The last update to this file was: **August 22, 2022**
 - ![testing table](readme_images/test_table2.webp)
 </details>
 
------
 ## Deployment
 
------
 ### How to deploy to Heroku
 
 <details>
@@ -186,21 +180,17 @@ The last update to this file was: **August 22, 2022**
 
 </details>
 
------
 ## Resources / Credits / Inspiration
-
 
 
 - [Python documentation](https://docs.python.org/3/)
 - [W3Schools documentation](https://www.w3schools.com/python/default.asp)
 - [Love sandwiches project](https://food-market-stock.herokuapp.com/)
 
------
 ## Acknowledgments
 
 - Thank you to my mentor Brian Macharia for guiding me and for his invaluable advice.
 
------
 ## Constraints
 
 The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.

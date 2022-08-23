@@ -69,6 +69,12 @@ def register():
         space()
         password = str(
             input("(MUST contain '!')\n\nEnter password: \n")).strip()
+            
+        # validates username length and password special requirement.
+        if len(username) < 4 or not username.isalpha(
+        ) or "!" not in password:
+            print("Input not valid, please try again.")
+            continue
 
         # validates if username if already taken.
         usernames = []
@@ -89,11 +95,6 @@ def register():
         #  or creates a new file if it doesn't exits
         with open(DETAILS_FILE_PATH, "a", newline="") as f:
             writer = csv.writer(f)
-
-            if len(username) < 4 and not username.isalpha(
-            ) or "!" not in password:
-                print("Input not valid, please try again.")
-                continue
 
             space()
             print("valid username and password.")
@@ -210,8 +211,6 @@ def play(username):
 
     word = get_random_word(WORDS)
     alphabet = set(string.ascii_uppercase)
-
-    # print(word)  # SECRET WORD### delete THIS ##########******************
 
     secret_word = set(word)  # letters in the secret word
     guessed_letters = set()  # list of non repeated letters\
