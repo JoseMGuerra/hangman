@@ -76,8 +76,7 @@ After the user has registered or logged-in in the main menu the user is brought 
 
 - User details stored in  local CSV file.
 
-![csv file](readme_images/details_db.webp)
-
+![csv file](readme_images/user_details_csv.webp)
 
 
 </details>
