@@ -23,9 +23,27 @@ The last update to this file was: **August 22, 2022**
 
 ## How to use the App
 
-After the user has registered or logged-in in the main menu the user is brought to the game. A random word from a word bank is generated every new game. The aim is to guess a secret word before spending the 7 lives given. If the user guesses the word before that he/she wins the game, if not the user dies and losses.
+After the user has registered or logged-in in the main menu the user is brought to the game. A random word from a word bank is generated every new game. The aim is to guess a secret word before spending the 7 lives given. If the user guesses the word before that he/she wins the game, if not the user dies and losses. Find out more about hangman in [wikipedia](https://en.wikipedia.org/wiki/Hangman_(game))
 
-[Hangman game wikipedia](https://en.wikipedia.org/wiki/Hangman_(game))
+## User Experience (UX)
+
+<details><summary>User stories - as user I want to able to:</summary>
+
+- easy navigate the application
+
+- register and login into the application
+
+- be greeted by my chosen username
+
+- exit the app during registration or login process if I chose so
+
+- be challenged with a different word every time I play the game
+
+- see feedback of my progress during the game
+
+- play again without having to login again
+
+</details>
 
 ## Features
 
@@ -44,10 +62,13 @@ After the user has registered or logged-in in the main menu the user is brought 
 <details><summary>Registration </summary>
 
 - User is prompted to enter username and password that meets the requirements.
+
 ![registration prompt](readme_images/registation_prompt.webp)
 
 - Validation message appears if invalid input is entered.
+
 ![registration validation](readme_images/register_validation.webp)
+![password validation](readme_images/password_validation.webp)
 
 - Validation for username already taken.
 
@@ -58,11 +79,13 @@ After the user has registered or logged-in in the main menu the user is brought 
 ![csv file](readme_images/details_db.webp)
 
 
+
 </details>
 
 <details><summary>Login</summary>
 
 - The user is prompted to enter his/her login credentials.
+
 ![login](readme_images/successful-login.webp)
 
 - User credentials validation
@@ -85,7 +108,7 @@ After the user has registered or logged-in in the main menu the user is brought 
 
 <details><summary>Hangman game</summary>
 
-- Features: random word, validates right input, live counting, display already guessed words, graphics.
+- Features: random word, validates right input, lives countdown, display already guessed words, graphics.
 
 ![hangman screenshot](readme_images/hangman.webp)
 
@@ -123,8 +146,8 @@ After the user has registered or logged-in in the main menu the user is brought 
   - Git is the  version control software used to commit and push code to the GitHub repository where the source code is stored.
 - [Visual Studio Code](https://code.visualstudio.com/)
   - VS Code for short is the integrated development environment (IDE) software used to build the website.
-- [Lucidchart](https://www.lucidchart.com/pages/)
-  - Lucidchart was used to create flowcharts of the project.
+- [Lucid chart](https://www.lucidchart.com/pages/)
+  - Lucid chart was used to create flowcharts of the project.
 - [Heroku](https://id.heroku.com)
   - Used to deploy the application and provides an environment where the code can be executed.
 - [Image converter](https://www.simpleimageresizer.com/)
@@ -134,9 +157,10 @@ After the user has registered or logged-in in the main menu the user is brought 
 
 ## Testing
 
-
 [PEP8 validator online check](http://pep8online.com/checkresult)
+
 <details>
+
 <summary> Result for run.py</summary>
 
 - ![PEP8_run.py](readme_images/Pep8_run.py.webp)    
@@ -146,6 +170,20 @@ After the user has registered or logged-in in the main menu the user is brought 
 
 - ![testing table](readme_images/test_table1.webp)
 - ![testing table](readme_images/test_table2.webp)
+</details>
+
+## Bugs
+
+
+<details><summary>Solved bugs</summary>
+
+- Problem: Register same username multiple times.
+  - Fix: Added validation that checks if username already exits.
+- Problem: Username validation not triggered.
+  - Fix: Syntax error in list comprehension.
+- Problem: Infinite loop during registration and login.
+  - Fix: Add a quit command to exit the loop.
+
 </details>
 
 ## Deployment
@@ -182,18 +220,13 @@ After the user has registered or logged-in in the main menu the user is brought 
 
 ## Resources / Credits / Inspiration
 
-
 - [Python documentation](https://docs.python.org/3/)
+- [Free code camp](https://www.freecodecamp.org/)
+- [Stack over flow](https://stackoverflow.com/questions/16060899/alphabet-range-in-python)
 - [W3Schools documentation](https://www.w3schools.com/python/default.asp)
+- [Geeks for Geeks](https://www.geeksforgeeks.org/python-programming-language/?ref=shm)
 - [Love sandwiches project](https://food-market-stock.herokuapp.com/)
 
 ## Acknowledgments
 
 - Thank you to my mentor Brian Macharia for guiding me and for his invaluable advice.
-
-## Constraints
-
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
-
------
-Happy coding!

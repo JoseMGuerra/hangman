@@ -63,55 +63,129 @@ def register():
     space()
     while True:
         # takes user inputs
-        username = str(
-            input("(min 4 characters alphanumeric)\
-                \n\nEnter you username:\n")).strip().title()
-        space()
-        password = str(
-            input("(MUST contain '!')\n\nEnter password: \n")).strip()
-            
-        # validates username length and password special requirement.
-        if len(username) < 4 or not username.isalpha(
-        ) or "!" not in password:
-            print("Input not valid, please try again.")
-            continue
+        username = get_user_input(
+            "(min 4 characters alphanumeric)\n\nEnter you username: ").title()
+        password = get_user_input("(min 4 characters)\n\nEnter password: ")
 
-        # validates if username if already taken.
-        usernames = []
-        with open(DETAILS_FILE_PATH) as f:
-            reader = csv.reader(f)
-            next(reader)
-            for row in reader:
-                for field in row:
-                    usernames.append(row[0])
-        if username in usernames:
+        if username_exists(username):
             space()
             print("### Sorry username already taken. ###")
             space()
             pause(1.5)
             continue
 
-        # open the file where users details will be appended\n
-        #  or creates a new file if it doesn't exits
-        with open(DETAILS_FILE_PATH, "a", newline="") as f:
-            writer = csv.writer(f)
+        if not username_validation(username):
+            print("### Invalid  Username !! ###\n")
+            continue
 
-            space()
-            print("valid username and password.")
-            pause(1.1)
+        if not (password_validation(password)):
+            print("### Invalid Password !! ###\n")
+            continue
 
-            writer.writerow([username, password])  # write user details to file
-            space()
-            print("Registering your details....")
-            pause(1.1)
-            space()
-            print("Please wait...")
-            pause(1.5)
-            space()
-            print("Registration completed successfully.")
-            pause(1.1)
-            space()
-            break
+        save_inputs(username, password)
+        space()
+        print("Valid username and password.")
+        pause(1.1)
+        space()
+        print("Registering your details....")
+        pause(1.1)
+        space()
+        print("Please wait...")
+        pause(1.5)
+        space()
+        print("Registration completed successfully.")
+        pause(1.1)
+        space()
+        main_menu()
+        break
+
+
+def get_user_input(message):
+    """"
+    get user inputs
+    """
+    user_input = input(message + "\n").strip()
+
+    if user_input == "quit":
+        quit()
+
+    return user_input
+
+
+def username_validation(username):
+    """
+    Function to validate the username
+    """
+    validation = True
+
+    if len(username) < 4:
+        print("length should be at least 4")
+        validation = False
+    if not any(char.isalpha() for char in username):
+        print("Username should be alphanumeric")
+        validation = False
+    if validation:
+        return validation
+
+
+def password_validation(password):
+    """
+    Function to validate the password
+    """
+
+    SPECIAL_CHARACTER = ["!", "@", "$", "%", "#"]
+    validation = True
+
+    if len(password) < 4:
+        print("length should be at least 4")
+        validation = False
+
+    if len(password) > 10:
+        print("length should be not be greater than 10")
+        validation = False
+
+    if not any(char.isdigit() for char in password):
+        print("Password should have at least one digit")
+        validation = False
+
+    if not any(char.isupper() for char in password):
+        print("Password should have at least one UPPERCASE letter")
+        validation = False
+
+    if not any(char.islower() for char in password):
+        print("Password should have at least one lowercase letter")
+        validation = False
+
+    if not any(char in SPECIAL_CHARACTER for char in password):
+        print("Password should have at least one of the symbols ! @ $ % #")
+        validation = False
+    if validation:
+        return validation
+
+
+def username_exists(username):
+    """ validates if username if already taken. """
+    usernames = []
+    with open(DETAILS_FILE_PATH) as f:
+        reader = csv.reader(f, delimiter=",")
+        next(reader)
+        for row in reader:
+            for field in row:
+                usernames.append(row[0])
+    if username in usernames:
+        return username
+
+
+def save_inputs(username, password):
+    """
+    open the file where users inputs will be appended
+    creates a new file if it doesn't exists
+    save user inputs to file
+    """
+
+    with open(DETAILS_FILE_PATH, "a", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([username, password])
 
 
 def login():
@@ -129,8 +203,8 @@ def login():
         with open(DETAILS_FILE_PATH, "r") as f:
             space()
 
-            username = input("Enter your username: \n").strip().title()
-            password = input("Enter your password: \n").strip()
+            username = get_user_input("Enter your username: ").title()
+            password = get_user_input("Enter your password: ")
 
             reader = csv.reader(f)
 
@@ -291,36 +365,36 @@ def main_menu():
     """
     Main menu, register and login.
     """
-    choice = ""
-    while choice != "3":
-        clear()
-        print_header("main")
-        space()
-        print("""
+    clear()
+    print_header("main")
+    space()
+    choice = input("""
     1. Press 1 to Register
 
     2. Press 2 to Login
 
     3. Press 3 to Quit
-    """)
-        space()
-        choice = input("\n")
 
-        if choice == "1":
-            register()
-        elif choice == "2":
-            login()
-        elif choice == "3":
-            pause(1)
-            print("Goodbye, have a good day!")
-            space()
-            pause(2.5)
-            clear()
-            quit()
-        else:
-            print("Sorry, I didn't understand that. Please try again.")
-            pause(2)
-            clear()
+    \n""")
+
+    space()
+
+    if choice == "1":
+        register()
+    elif choice == "2":
+        login()
+    elif choice == "3":
+        pause(1)
+        print("Goodbye, have a good day!")
+        space()
+        pause(2.5)
+        clear()
+        quit()
+    else:
+        print("Sorry, I didn't understand that. Please try again.")
+        pause(2)
+        clear()
+        main_menu()
 
 
 if __name__ == "__main__":
