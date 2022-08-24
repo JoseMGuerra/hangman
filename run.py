@@ -64,8 +64,14 @@ def register():
     while True:
         # takes user inputs
         username = get_user_input(
-            "(min 4 characters alphanumeric)\n\nEnter you username: ").title()
-        password = get_user_input("(min 4 characters)\n\nEnter password: ")
+            "min 4 characters alphanumeric\n\nEnter you username: ").title()
+        password = get_user_input("""
+        min 4 characters
+        max 10 characters
+        at least 1 UPPERCASE
+        at least 1 lowercase
+        at least 1 symbol ! @ $ % #\n
+        \nEnter password: """)
 
         if username_exists(username):
             space()
