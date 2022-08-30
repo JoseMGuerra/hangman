@@ -156,7 +156,7 @@ After the user has registered or logged-in in the main menu the user is brought 
 
 ## Testing
 
-[PEP8 validator online check](http://pep8online.com/checkresult)
+[PEP8 validator online check](http://pep8online.com)
 
 <details>
 

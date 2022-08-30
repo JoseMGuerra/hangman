@@ -8,7 +8,7 @@ import sys
 import time
 import csv
 
-DETAILS_FILE_PATH = "assets/py/user_details.csv"
+DETAILS_FILE_PATH = "user_details.csv"
 
 
 def get_random_word(WORDS):
@@ -61,6 +61,9 @@ def register():
     clear()
     print_header("register")
     space()
+    space()
+    print("Type 'menu' to back to the Main Menu")
+    space()
     while True:
         # takes user inputs
         username = get_user_input(
@@ -80,11 +83,11 @@ def register():
             pause(1.5)
             continue
 
-        if not username_validation(username):
+        if not username_valid(username):
             print("### Invalid  Username !! ###\n")
             continue
 
-        if not (password_validation(password)):
+        if not (password_valid(password)):
             print("### Invalid Password !! ###\n")
             continue
 
@@ -112,74 +115,81 @@ def get_user_input(message):
     """
     user_input = input(message + "\n").strip()
 
-    if user_input == "quit":
+    if user_input == "menu":
+        main_menu()
+
+    elif user_input == "quit":
         quit()
 
     return user_input
 
 
-def username_validation(username):
+def username_valid(username):
     """
     Function to validate the username
     """
-    validation = True
+    valid = True
 
     if len(username) < 4:
         print("length should be at least 4")
-        validation = False
+        valid = False
     if not any(char.isalpha() for char in username):
         print("Username should be alphanumeric")
-        validation = False
-    if validation:
-        return validation
+        valid = False
+    
+    return valid
 
 
-def password_validation(password):
+def password_valid(password):
     """
     Function to validate the password
     """
 
     SPECIAL_CHARACTER = ["!", "@", "$", "%", "#"]
-    validation = True
+
+    valid = True
 
     if len(password) < 4:
         print("length should be at least 4")
-        validation = False
+        valid = False
 
     if len(password) > 10:
         print("length should be not be greater than 10")
-        validation = False
+        valid = False
 
     if not any(char.isdigit() for char in password):
         print("Password should have at least one digit")
-        validation = False
+        valid = False
 
     if not any(char.isupper() for char in password):
         print("Password should have at least one UPPERCASE letter")
-        validation = False
+        valid = False
 
     if not any(char.islower() for char in password):
         print("Password should have at least one lowercase letter")
-        validation = False
+        valid = False
 
     if not any(char in SPECIAL_CHARACTER for char in password):
         print("Password should have at least one of the symbols ! @ $ % #")
-        validation = False
-    if validation:
-        return validation
+        valid = False
+
+    return valid
 
 
 def username_exists(username):
     """ validates if username if already taken. """
     usernames = []
+
     with open(DETAILS_FILE_PATH) as f:
+
         reader = csv.reader(f, delimiter=",")
         next(reader)
+
         for row in reader:
-            for field in row:
+            for _ in row:
                 usernames.append(row[0])
-    if username in usernames:
-        return username
+
+        return username in usernames
 
 
 def save_inputs(username, password):
@@ -203,19 +213,21 @@ def login():
     space()
     print("Please enter Username and Password")
     space()
+    print("OR type 'menu' to back to the Main Menu")
     access_granted = False
 
-    while access_granted is False:
-        with open(DETAILS_FILE_PATH, "r") as f:
-            space()
+    while not access_granted:
+        space()
+        username = get_user_input("Enter your username: \n").title()
+        password = get_user_input("Enter your password: \n")
 
-            username = get_user_input("Enter your username: ").title()
-            password = get_user_input("Enter your password: ")
+        with open(DETAILS_FILE_PATH, "r") as f:
 
             reader = csv.reader(f)
 
             for row in reader:
                 for cell in row:
+                    # username and password provided are valid
                     if cell == username and row[1] == password:
                         access_granted = True
                     else:
@@ -250,15 +262,17 @@ def game_menu(username):
         print_header("game_menu")
         space()
         print("""
-        1. Press 1 to play
+        1. Press 1 to P,lay
 
         2. Press 2 to Quit
+
+        3. Press 3 to Main Menu
         """)
         space()
-        choice = input("What would you like to do? \n").strip()
+        choice = get_user_input("What would you like to do? \n")
         space()
         if choice == "" or choice == " ":
-            print("Try selecting 1 OR 2")
+            print("Please select one Option")
             pause(10)
             continue
         if choice == "1":
@@ -278,6 +292,8 @@ def game_menu(username):
             pause(2.5)
             clear()
             quit()
+        if choice == "3":
+            main_menu()
 
 
 def play(username):
@@ -353,8 +369,8 @@ def play_again(username):
     Prompt user if would like to play another round
     """
     space()
-    another_round = input(
-        "Would you like to play again : Y / N \n").upper()
+    another_round = get_user_input("Would you like to play again : Y / N \n")\
+        .upper()
     if another_round == "y" or another_round == "Y":
         play(username)
     else:
@@ -362,7 +378,7 @@ def play_again(username):
         space()
         print(f"Thank you for playing, have a nice day {username}!")
         space()
-        pause(1.1)
+        pause(1.5)
         clear()
         quit()
 
@@ -374,7 +390,7 @@ def main_menu():
     clear()
     print_header("main")
     space()
-    choice = input("""
+    choice = get_user_input("""
     1. Press 1 to Register
 
     2. Press 2 to Login
