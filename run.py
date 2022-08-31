@@ -1,14 +1,14 @@
-# Imported modules
-from headers import print_header
-from hangman_pics import hangman_pics
-from words import WORDS
+""" Hangman App """
 import random
 import string
 import sys
 import time
 import csv
+from headers import print_header
+from hangman_pics import hangman_pics
+from words import WORDS
 
-DETAILS_FILE_PATH = "user_details.csv"
+DETAILS_FILE_PATH = "/workspace/hangman/assets/user_details.csv"
 
 
 def get_random_word(WORDS):
@@ -62,34 +62,37 @@ def register():
     print_header("register")
     space()
     space()
-    print("Type 'menu' to back to the Main Menu")
+    print("Type 'menu' to Main Menu")
     space()
     while True:
         # takes user inputs
         username = get_user_input(
-            "min 4 characters alphanumeric\n\nEnter you username: ").title()
+            "min 4 characters alphanumeric\n\nEnter you username: \n").title()
         password = get_user_input("""
         min 4 characters
         max 10 characters
         at least 1 UPPERCASE
         at least 1 lowercase
-        at least 1 symbol ! @ $ % #\n
+        at least 1 symbol ! @ $ % #
         \nEnter password: """)
-
-        if username_exists(username):
-            space()
-            print("### Sorry username already taken. ###")
-            space()
-            pause(1.5)
-            continue
 
         if not username_valid(username):
             print("### Invalid  Username !! ###\n")
             continue
 
-        if not (password_valid(password)):
+        if not password_valid(password):
             print("### Invalid Password !! ###\n")
             continue
+
+        try:
+            if username_exists(username):
+                space()
+                print("### Sorry username already taken. ###")
+                space()
+                pause(1.5)
+                continue
+        except FileNotFoundError:
+            print(FileNotFoundError())
 
         save_inputs(username, password)
         space()
@@ -136,7 +139,7 @@ def username_valid(username):
     if not any(char.isalpha() for char in username):
         print("Username should be alphanumeric")
         valid = False
-    
+
     return valid
 
 
@@ -199,8 +202,10 @@ def save_inputs(username, password):
     save user inputs to file
     """
 
-    with open(DETAILS_FILE_PATH, "a", newline="") as f:
-        writer = csv.writer(f)
+    with open(DETAILS_FILE_PATH, "a", newline="") as file:
+
+        writer = csv.writer(file)
+
         writer.writerow([username, password])
 
 
@@ -213,7 +218,7 @@ def login():
     space()
     print("Please enter Username and Password")
     space()
-    print("OR type 'menu' to back to the Main Menu")
+    print("OR type 'menu' to Main Menu")
     access_granted = False
 
     while not access_granted:
@@ -221,35 +226,41 @@ def login():
         username = get_user_input("Enter your username: \n").title()
         password = get_user_input("Enter your password: \n")
 
-        with open(DETAILS_FILE_PATH, "r") as f:
+        try:
+            with open(DETAILS_FILE_PATH, "r") as file:
 
-            reader = csv.reader(f)
+                reader = csv.reader(file)
 
-            for row in reader:
-                for cell in row:
-                    # username and password provided are valid
-                    if cell == username and row[1] == password:
-                        access_granted = True
-                    else:
-                        break
+                for row in reader:
+                    for cell in row:
+                        # username and password provided are valid
+                        if cell == username and row[1] == password:
+                            access_granted = True
+                        else:
+                            break
+        except FileNotFoundError:
+            print("Please, register if you haven't.")
+            space()
+            print("OR type 'menu' to go to Main Menu")
+            print(FileNotFoundError())
 
-            if access_granted is False:
-                print("Wrong username or password, please try again")
-            else:
-                space()
-                print("Access granted.")
-                pause(2.1)
-                space()
-                print(f"Welcome {username}!")
-                pause(2.1)
-                space()
-                print("You are being redirected to our game menu...")
-                space()
-                pause(2.1)
-                print("Please wait...")
-                space()
-                pause(2.1)
-                game_menu(username)
+        if access_granted is False:
+            print("Wrong username or password, please try again")
+        else:
+            space()
+            print("Access granted.")
+            pause(2.1)
+            space()
+            print(f"Welcome {username}!")
+            pause(2.1)
+            space()
+            print("You are being redirected to our game menu...")
+            space()
+            pause(2.1)
+            print("Please wait...")
+            space()
+            pause(2.1)
+            game_menu(username)
 
 
 def game_menu(username):
@@ -262,7 +273,7 @@ def game_menu(username):
         print_header("game_menu")
         space()
         print("""
-        1. Press 1 to P,lay
+        1. Press 1 to Play
 
         2. Press 2 to Quit
 
@@ -331,7 +342,7 @@ def play(username):
         # transform to uppercase so all letters have the same ascii value
         # getting  user guesses
         space()
-        user_letter = input("Guess a letter: \n").upper()
+        user_letter = get_user_input("Guess a letter: \n").upper()
 
         if user_letter in alphabet - guessed_letters:
             guessed_letters.add(user_letter)
