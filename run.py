@@ -201,12 +201,15 @@ def save_inputs(username, password):
     creates a new file if it doesn't exists
     save user inputs to file
     """
+    try:
+        with open(DETAILS_FILE_PATH, "a", newline="") as file:
 
-    with open(DETAILS_FILE_PATH, "a", newline="") as file:
+            writer = csv.writer(file)
 
-        writer = csv.writer(file)
+            writer.writerow([username, password])
 
-        writer.writerow([username, password])
+    except FileNotFoundError:
+        print(FileNotFoundError())
 
 
 def login():
