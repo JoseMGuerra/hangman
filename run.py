@@ -141,7 +141,7 @@ def get_user_input(message):
     """" Get user input.
 
     :param: message - message changes upon inputs.
-    :return: user_input 
+    :return: user_input
 
     Function that sets a general rule for user inputs.
     Allows the user to go to main menu by typing 'menu'
@@ -244,7 +244,6 @@ def is_username_taken(username):
     """
 
     username_list = worksheet.col_values(1)
-    username_cell = worksheet.find(username)
 
     return username in username_list
 
@@ -265,9 +264,9 @@ def save_inputs(username, password):
 def login():
     """ Get user inputs to grant access to the application.
 
-    Function to get user inputs and compare them with the user 
-    registration database. 
-    If the input are correct: access is granted. 
+    Function to get user inputs and compare them with the user
+    registration database.
+    If the input are correct: access is granted.
     Otherwise access is denied.
     """
     clear()
@@ -285,9 +284,7 @@ def login():
 
         try:
             username_list = worksheet.col_values(1)
-            username_cell = worksheet.find(username)
             password_list = worksheet.col_values(2)
-            password_cell = worksheet.find(password)
 
             if username in username_list and password in password_list:
                 access_granted = True
@@ -445,7 +442,7 @@ def play_again(username):
 
     :param: username - used to format text.
 
-    Function to get user input asking for Yes or No and 
+    Function to get user input asking for Yes or No and
     invoking the correct function depending on user response.
     """
     space()
