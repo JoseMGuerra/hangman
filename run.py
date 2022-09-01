@@ -5,22 +5,21 @@ import string
 import sys
 import time
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 from headers import print_header
 from hangman_pics import hangman_pics
 from words import WORDS
 
-SCOPE = ["https://spreadsheets.google.com/feeds",
-         'https://www.googleapis.com/auth/spreadsheets',
-         "https://www.googleapis.com/auth/drive.file",
-         "https://www.googleapis.com/auth/drive"]
+SCOPE = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive"
+    ]
 
-CREDENTIALS = ServiceAccountCredentials.from_json_keyfile_name(
-    'credentials.json', SCOPE)
-
-CLIENT = gspread.authorize(CREDENTIALS)
-
-SHEET = CLIENT.open('Hangman_users')
+CREDS = Credentials.from_service_account_file('creds.json')
+SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+SHEET = GSPREAD_CLIENT.open('Hangman_users')
 worksheet = SHEET.worksheet("details")
 
 
