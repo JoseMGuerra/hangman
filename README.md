@@ -1,20 +1,18 @@
+# PP3 - Hangman in Python
+
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
 ![Hm logo](favicon.ico)
 
-# PP3 - Hangman in Python
-
 ## About
-
 
 Hangman Python3 Command Line application. It's a guessing game where the User tries to guess a random  word in a certain number of guesses.
 
 The last update to this file was: **August 22, 2022**
 
-[You can find the live project here](https://hangman-py.herokuapp.com/)
+[You can find the live project here](https://hangman-pp3-py.herokuapp.com/)
 
 ## Responsiveness
-
 
 <details><summary>Am i responsive?</summary>
 
@@ -47,7 +45,6 @@ After the user has registered or logged-in in the main menu the user is brought 
 
 ## Features
 
-
 <details><summary>Main menu</summary>
 
 - The main menu is displayed when the application starts. Simple an easy to to understand: 1. New user registration  , 2. User login , 3. Exit.
@@ -63,21 +60,13 @@ After the user has registered or logged-in in the main menu the user is brought 
 
 - User is prompted to enter username and password that meets the requirements.
 
-![registration prompt](readme_images/registation_prompt.webp)
-
 - Validation message appears if invalid input is entered.
 
 ![registration validation](readme_images/register_validation.webp)
-![password validation](readme_images/password_validation.webp)
 
 - Validation for username already taken.
 
 ![username already taken](readme_images/username_already_taken.webp)
-
-- User details stored in  local CSV file.
-
-![csv file](readme_images/user_details_csv.webp)
-
 
 </details>
 
@@ -85,7 +74,7 @@ After the user has registered or logged-in in the main menu the user is brought 
 
 - The user is prompted to enter his/her login credentials.
 
-![login](readme_images/successful-login.webp)
+![login](readme_images/successful_login.webp)
 
 - User credentials validation
 
@@ -98,10 +87,6 @@ After the user has registered or logged-in in the main menu the user is brought 
 - The user is prompted if he/she wants to play of to quit.
 
 ![game menu](readme_images/game_menu.webp)
-
-- Validation message
-
-![validation message](readme_images/game_menu_validation.webp)
 
 </details>
 
@@ -124,7 +109,6 @@ After the user has registered or logged-in in the main menu the user is brought 
 
 ## Technologies
 
-
 <details><summary>Languages, External Libraries and Programs Used</summary>
 
 - [Python 3](https://www.python.org/)
@@ -135,8 +119,8 @@ After the user has registered or logged-in in the main menu the user is brought 
   - The uppercase letters 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.
 - [Time](https://docs.python.org/3/library/time.html?highlight=time%20sleep#time.sleep)
   - From time this app uses sleep to pause between screens.
-- [Csv](https://docs.python.org/3/library/csv.html?highlight=csv)
-  - Comma Separated values file reading and writing.
+- [Gspread](https://docs.gspread.org/en/latest/index.html)
+  - gspread is a Python API for Google Sheets.
 - [Sys](https://docs.python.org/3/library/sys.html?highlight=sys#module-sys)
   - System-specific parameters and functions.
 - [Github](https://github.com/)
@@ -162,26 +146,33 @@ After the user has registered or logged-in in the main menu the user is brought 
 
 <summary> Result for run.py</summary>
 
-- ![PEP8_run.py](readme_images/Pep8_run.py.webp)    
+- ![PEP8_run.py](readme_images/pep8-run-py.webp)
+
 </details>
 
 <details><summary>Testing table</summary>
 
 - ![testing table](readme_images/test_table1.webp)
+
 - ![testing table](readme_images/test_table2.webp)
+
 </details>
 
 ## Bugs
 
-
 <details><summary>Solved bugs</summary>
 
-- Problem: Register same username multiple times.
-  - Fix: Added validation that checks if username already exits.
+- Problem: Registration of the same username multiple times.
+  - Fix: Added function that validates if username already exits.
 - Problem: Username validation not triggered.
   - Fix: Syntax error in list comprehension.
 - Problem: Infinite loop during registration and login.
   - Fix: Add a quit command to exit the loop.
+- Problem: Accidentally pushed the users CSV database to Github,
+  but the accounts whose passwords were on Github were test accounts.
+  - Fix: They have so far been removed.
+- Problem: Unable to retrieve CSV users data from Github to Heroku.
+  - Fix: Implement Google sheet API as database.
 
 </details>
 
@@ -204,16 +195,15 @@ After the user has registered or logged-in in the main menu the user is brought 
 - Scroll down the Settings page to Buildpacks:
   - Click Add buildpack, select Python from the pop up window and click on Save changes.
   - Click Add buildpack again, select Node.js click on Save changes. It is important that is done in that order Python first, then Node.js beneath.
-  - ![heroku settings](readme_images/Heroku_settings.webp)
-- Click on the Deploy tab on the Application Configuration page.
+  - Click on the Deploy tab on the Application Configuration page.
   - Select GitHub as the Deployment Method.
-  - Enter your Github username and your Github repository name (in this case https://github.com/JoseMGuerra/hangman) and click on Connect to link up the Heroku app to the GitHub repository code.
+  - Enter your Github username and your Github repository name (in this case [https://github.com/JoseMGuerra/hangman-pp3-py](https://github.com/JoseMGuerra/hangman-pp3-py)) and click on Connect to link up the Heroku app to the GitHub repository code.
 
 - Scroll down the page and there are to options, either Automatically Deploy each time changes are pushed to GitHub, or Manually deploy - for this project Automatic Deploy was selected.
 
 - The application can be run by clicking on the Open App button at the top of the Application Configuration page.
 
-- The live link for this project is (https://hangman-py.herokuapp.com/)
+- The live link for this project is [https://hangman-pp3-py.herokuapp.com](https://hangman-pp3-py.herokuapp.com)
 
 </details>
 

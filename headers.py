@@ -2,8 +2,8 @@
 
 HEADERS = {
     "main": "MAIN MENU",
-    "register": "REGISTER",
-    "login": "LOGIN",
+    "register": "  REGISTER",
+    "login": "  LOGIN",
     "game_menu": "GAME MENU",
     "hangman": "WELCOME TO HANGMAN"
 }

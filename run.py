@@ -1,5 +1,7 @@
 """ Hangman game with Google sheet API - v.1 """
 
+
+# Imported libraries and modules
 import random
 import string
 import sys
@@ -48,6 +50,7 @@ def clear():
     """ Clear the screen
 
     Function to clear the clear.
+
     Invokes print('\\033c').
     """
     print('\033c')
@@ -57,6 +60,7 @@ def space():
     """ Prints an empty line.
 
     Function to creates empty lines for better readability.
+
     Invokes  print("").
     """
     print("")
@@ -87,12 +91,12 @@ def register():
     print_header("register")
     space()
     space()
-    print("Type 'menu' to Main Menu")
+    print(" Type 'menu' to Main Menu")
     space()
     while True:
         # takes user inputs
         username = get_user_input(
-            "min 4 characters alphanumeric\n\nEnter you username: \n").title()
+            " min 4 characters alphanumeric\n\nEnter you username: \n").title()
         password = get_user_input("""
         min 4 characters
         max 10 characters
@@ -102,16 +106,16 @@ def register():
         \nEnter password: """)
 
         if not username_valid(username):
-            print("### Invalid  Username !! ###\n")
+            print(" ### Invalid  Username !! ###\n")
             continue
 
         if not (password_valid(password)):
-            print("### Invalid Password !! ###\n")
+            print(" ### Invalid Password !! ###\n")
             continue
         try:
             if is_username_taken(username):
                 space()
-                print("### Sorry username already taken. ###")
+                print(" ### Sorry username already taken. ###")
                 space()
                 pause(1.5)
                 continue
@@ -120,16 +124,16 @@ def register():
 
         save_inputs(username, password)
         space()
-        print("Valid username and password.")
+        print(" Valid username and password.")
         pause(1.1)
         space()
-        print("Registering your details....")
+        print(" Registering your details....")
         pause(1.1)
         space()
-        print("Please wait...")
+        print(" Please wait...")
         pause(1.5)
         space()
-        print("Registration completed successfully.")
+        print(" Registration completed successfully.")
         pause(1.1)
         space()
         main_menu()
@@ -173,10 +177,10 @@ def username_valid(username):
     valid = True
 
     if len(username) < 4:
-        print("length should be at least 4")
+        print(" length should be at least 4")
         valid = False
     if not any(char.isalpha() for char in username):
-        print("Username should be alphanumeric")
+        print(" Username should be alphanumeric")
         valid = False
 
     return valid
@@ -201,32 +205,32 @@ def password_valid(password):
 
     """
 
-    SPECIAL_CHARACTER = ["!", "@", "$", "%", "#"]
+    SP_CHAR = ["!", "@", "$", "%", "#"]
 
     valid = True
 
     if len(password) < 4:
-        print("length should be at least 4")
+        print(" length should be at least 4")
         valid = False
 
     if len(password) > 10:
-        print("length should be not be greater than 10")
+        print(" length should be not be greater than 10")
         valid = False
 
     if not any(char.isdigit() for char in password):
-        print("Password should have at least one digit")
+        print(" Password should have at least one digit")
         valid = False
 
     if not any(char.isupper() for char in password):
-        print("Password should have at least one UPPERCASE letter")
+        print(" Password should have at least one UPPERCASE letter")
         valid = False
 
     if not any(char.islower() for char in password):
-        print("Password should have at least one lowercase letter")
+        print(" Password should have at least one lowercase letter")
         valid = False
 
-    if not any(char in SPECIAL_CHARACTER for char in password):
-        print("Password should have at least one of the symbols ! @ $ % #")
+    if not any(char in SP_CHAR for char in password):
+        print(" Password should have at least one of the symbols ! @ $ % #")
         valid = False
 
     return valid
@@ -271,15 +275,15 @@ def login():
     clear()
     print_header("login")
     space()
-    print("Please enter Username and Password")
+    print(" Please enter Username and Password")
     space()
-    print("OR type 'menu' to go to Main Menu")
+    print(" OR type 'menu' to go to Main Menu")
     access_granted = False
 
     while not access_granted:
         space()
-        username = get_user_input("Enter your username: \n").title()
-        password = get_user_input("Enter your password: \n")
+        username = get_user_input(" Enter your username: \n").title()
+        password = get_user_input(" Enter your password: \n")
 
         try:
             username_list = worksheet.col_values(1)
@@ -288,38 +292,45 @@ def login():
             if username in username_list and password in password_list:
                 access_granted = True
                 space()
-                print("Access granted.")
+                print(" Access granted.")
                 pause(2.1)
                 space()
-                print(f"Welcome {username}!")
+                print(f" Welcome {username}!")
                 pause(2.1)
                 space()
-                print("You are being redirected to our game menu...")
+                print(" You are being redirected to our game menu...")
                 space()
                 pause(2.1)
-                print("Please wait...")
+                print(" Please wait...")
                 space()
                 pause(2.1)
                 game_menu(username)
             else:
                 access_granted = False
                 if username not in username_list:
-                    print("### Wrong username ###")
+                    print(" ### Wrong username ###")
                 if password not in password_list:
-                    print("### Wrong password ###")
+                    print(" ### Wrong password ###")
                 continue
 
         except FileNotFoundError:
 
-            print("Please, register if you haven't.")
+            print(" Please, register if you haven't.")
             space()
-            print("OR type 'menu' to go to Main Menu")
+            print(" OR type 'menu' to go to Main Menu")
             print(FileNotFoundError())
 
 
 def game_menu(username):
-    """
-    Game menu where user choices to play or quit the game
+    """ Game menu with user choices.
+
+    :param: username - used to format text.
+
+    Function that get user input, prompting user to chose between:
+
+    1. Play
+    2. Quit
+    3. Go to Main Menu
     """
     choice = ""
     while True:
@@ -334,25 +345,25 @@ def game_menu(username):
         3. Press 3 to Main Menu
         """)
         space()
-        choice = get_user_input("What would you like to do? \n")
+        choice = get_user_input(" What would you like to do? \n")
         space()
         if choice == "" or choice == " ":
-            print("Please select one Option")
+            print(" Please select one Option")
             pause(10)
             continue
         if choice == "1":
-            print(f"Excellent {username} , let's play!")
+            print(f" Excellent {username} , let's play!")
             space()
-            print("Loading the game...")
+            print(" Loading the game...")
             pause(1.1)
             space()
             pause(1.1)
-            print("Please wait...")
+            print(" Please wait...")
             pause(2.1)
             play(username)
         if choice == "2":
             pause(1)
-            print(f"Goodbye {username}, have a nice day!")
+            print(f" Goodbye {username}, have a nice day!")
             space()
             pause(2.5)
             clear()
@@ -388,22 +399,22 @@ def play(username):
 
     while len(secret_word) > 0 and lives > 0:
         space()
-        print("You have used these letters: ", " ".join(
+        print(" You have used these letters: ", " ".join(
             guessed_letters))  # print used letters
         space()
-        print(f"You have {lives} lives left.")  # print live left
+        print(f" You have {lives} lives left.")  # print live left
 
         # what secret word is ( ie S_CR_T)
         word_list = [
             letter if letter in guessed_letters else "_" for letter in word]
         print(hangman_pics[lives])
         space()
-        print("Secret word: ", " ".join(word_list))
+        print(" Secret word: ", " ".join(word_list))
 
         # transform to uppercase so all letters have the same ascii value
         # getting  user guesses
         space()
-        user_letter = get_user_input("Guess a letter: \n").upper()
+        user_letter = get_user_input(" Guess a letter: \n").upper()
 
         if user_letter in alphabet - guessed_letters:
             guessed_letters.add(user_letter)
@@ -415,24 +426,24 @@ def play(username):
         elif user_letter in guessed_letters:  # check if user already
             # guessed a letter
             space()
-            print("You have already used that letter, try another one.")
+            print(" You have already used that letter, try another one.")
 
         else:
             space()
-            print("Invalid character, Please try again.")
+            print(" Invalid character, Please try again.")
 
     # when len(secret_word) == 0 OR when lives ==0 ->
     if lives == 0:
         clear()
         print(hangman_pics[lives])
         space()
-        print(f"Sorry, you just died!. The word was {word}")
+        print(f" Sorry, you just died!. The word was {word}")
         play_again(username)  # play again
     else:
         space()
-        print(f"Congratulations!!. You nailed {username}!!")
+        print(f" Congratulations!!. You nailed {username}!!")
         space()
-        print(f"The word is: {word}")
+        print(f" The word is: {word}")
         play_again(username)
 
 
@@ -445,14 +456,14 @@ def play_again(username):
     invoking the correct function depending on user response.
     """
     space()
-    another_round = get_user_input("Would you like to play again : Y / N \n")\
+    another_round = get_user_input(" Would you like to play again : Y / N \n")\
         .upper()
     if another_round == "y" or another_round == "Y":
         play(username)
     else:
         clear()
         space()
-        print(f"Thank you for playing, have a nice day {username}!")
+        print(f" Thank you for playing, have a nice day {username}!")
         space()
         pause(1.5)
         clear()
@@ -487,13 +498,13 @@ def main_menu():
         login()
     elif choice == "3":
         pause(1)
-        print("Goodbye, have a good day!")
+        print(" Goodbye, have a good day!")
         space()
         pause(2.5)
         clear()
         quit()
     else:
-        print("Sorry, I didn't understand that. Please try again.")
+        print(" Sorry, I didn't understand that. Please try again.")
         pause(2)
         clear()
         main_menu()
