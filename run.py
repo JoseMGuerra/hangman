@@ -1,18 +1,36 @@
-""" Hangman App """
+""" Hangman game with Google sheet API - v.1 """
+
 import random
 import string
 import sys
 import time
-import csv
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 from headers import print_header
 from hangman_pics import hangman_pics
 from words import WORDS
 
-DETAILS_FILE_PATH = "/workspace/hangman/assets/user_details.csv"
+SCOPE = ["https://spreadsheets.google.com/feeds",
+         'https://www.googleapis.com/auth/spreadsheets',
+         "https://www.googleapis.com/auth/drive.file",
+         "https://www.googleapis.com/auth/drive"]
+
+CREDENTIALS = ServiceAccountCredentials.from_json_keyfile_name(
+    'credentials.json', SCOPE)
+
+CLIENT = gspread.authorize(CREDENTIALS)
+
+SHEET = CLIENT.open('Hangman_users')
+worksheet = SHEET.worksheet("details")
 
 
 def get_random_word(WORDS):
-    """ Chose a word randomly from the WORDS module """
+    """ Get a a word from a word list.
+    :param: WORDS - words form module words.py
+    :return: word.upper()
+
+    Function to generate a random word from a word list.
+    """
     word = random.choice(WORDS)
 
     word = random.choice(WORDS)
@@ -20,43 +38,51 @@ def get_random_word(WORDS):
 
 
 def quit():
-    """
-    Helper function to exit the game
-    "sys.exit()"
+    """ Helper function to exit the application.
+
+    Invokes sys.exit().
     """
     sys.exit()
 
 
 def clear():
-    """
-    Clear the screen
-    "print('\\033c')"
+    """ Clear the screen
+
+    Function to clear the clear.
+    Invokes print('\\033c').
     """
     print('\033c')
 
 
 def space():
-    """
-    Prints an empty line
-    "print("")"
+    """ Prints an empty line.
+
+    Function to creates empty lines for better readability.
+    Invokes  print("").
     """
     print("")
 
 
 def pause(seconds):
-    """
-    Pause the screen for nth seconds
-    better user experience
-    "time.sleep(s)"
+    """ Pause the screen for nth seconds.
+    :param: seconds - time in seconds.
+
+    Function to pause screen for better user experience.
+    Invokes "time.sleep(s)"
     """
     time.sleep(seconds)
 
 
 def register():
-    """
-    Get username and password input from the user, validates user inputs.
-    add user to user_details file or creates new file if it doesn't exits.
+    """ Get username and password inputs from the user.
 
+    Invokes username_valid function passing username input.
+    Invokes password_valid function passing password input.
+    Invokes is_username_taken function passing username input.
+
+    If all validations has passed:
+    Invokes save_inputs function
+    passing username and password.
     """
     clear()
     print_header("register")
@@ -80,12 +106,11 @@ def register():
             print("### Invalid  Username !! ###\n")
             continue
 
-        if not password_valid(password):
+        if not (password_valid(password)):
             print("### Invalid Password !! ###\n")
             continue
-
         try:
-            if username_exists(username):
+            if is_username_taken(username):
                 space()
                 print("### Sorry username already taken. ###")
                 space()
@@ -113,8 +138,14 @@ def register():
 
 
 def get_user_input(message):
-    """"
-    get user inputs
+    """" Get user input.
+
+    :param: message - message changes upon inputs.
+    :return: user_input 
+
+    Function that sets a general rule for user inputs.
+    Allows the user to go to main menu by typing 'menu'
+    or to quit by typing 'quit'.
     """
     user_input = input(message + "\n").strip()
 
@@ -128,8 +159,17 @@ def get_user_input(message):
 
 
 def username_valid(username):
-    """
-    Function to validate the username
+    """ Function to validate the username input.
+
+    :param: username - from user registration input.
+    :return: bool - True if passes validation.
+
+    Function that validates username input.
+
+    I MUST contain:
+
+    Alphanumeric characters.
+    Be at least 4 characters long.
     """
     valid = True
 
@@ -144,8 +184,22 @@ def username_valid(username):
 
 
 def password_valid(password):
-    """
-    Function to validate the password
+    """ Function to validate user password input.
+
+    :param: password - from user registration input.
+    :return: bool - True passes validation.
+
+    Function that validates password input.
+
+    It Must contain:
+
+    1 special character.
+    1 digit.
+    1 UPPERCASE.
+    1 lowercase.
+    Be at least 4 characters long.
+    No more than 10 characters long.
+
     """
 
     SPECIAL_CHARACTER = ["!", "@", "$", "%", "#"]
@@ -179,49 +233,49 @@ def password_valid(password):
     return valid
 
 
-def username_exists(username):
-    """ validates if username if already taken. """
-    usernames = []
+def is_username_taken(username):
+    """ validates if username if already taken.
 
-    with open(DETAILS_FILE_PATH) as f:
+    :param: username - from user registration input.
+    :return: bool - True if username is taken.
 
-        reader = csv.reader(f, delimiter=",")
-        next(reader)
+    Function to get username values from details worksheet.
+    Compare user input with database and return a bool.
+    """
 
-        for row in reader:
-            for _ in row:
-                usernames.append(row[0])
+    username_list = worksheet.col_values(1)
+    username_cell = worksheet.find(username)
 
-        return username in usernames
+    return username in username_list
 
 
 def save_inputs(username, password):
     """
-    open the file where users inputs will be appended
-    creates a new file if it doesn't exists
-    save user inputs to file
+    Append user inputs to worksheet.
+
+    :param: username - from user registration input.
+    :param: password - from user registration input.
+
+    Function to save user inputs to google sheet API worksheet.
     """
-    try:
-        with open(DETAILS_FILE_PATH, "a", newline="") as file:
-
-            writer = csv.writer(file)
-
-            writer.writerow([username, password])
-
-    except FileNotFoundError:
-        print(FileNotFoundError())
+    data = [username, password]
+    worksheet.append_row(data)
 
 
 def login():
-    """
-    Get and Validates user login details
+    """ Get user inputs to grant access to the application.
+
+    Function to get user inputs and compare them with the user 
+    registration database. 
+    If the input are correct: access is granted. 
+    Otherwise access is denied.
     """
     clear()
     print_header("login")
     space()
     print("Please enter Username and Password")
     space()
-    print("OR type 'menu' to Main Menu")
+    print("OR type 'menu' to go to Main Menu")
     access_granted = False
 
     while not access_granted:
@@ -230,40 +284,41 @@ def login():
         password = get_user_input("Enter your password: \n")
 
         try:
-            with open(DETAILS_FILE_PATH, "r") as file:
+            username_list = worksheet.col_values(1)
+            username_cell = worksheet.find(username)
+            password_list = worksheet.col_values(2)
+            password_cell = worksheet.find(password)
 
-                reader = csv.reader(file)
+            if username in username_list and password in password_list:
+                access_granted = True
+                space()
+                print("Access granted.")
+                pause(2.1)
+                space()
+                print(f"Welcome {username}!")
+                pause(2.1)
+                space()
+                print("You are being redirected to our game menu...")
+                space()
+                pause(2.1)
+                print("Please wait...")
+                space()
+                pause(2.1)
+                game_menu(username)
+            else:
+                access_granted = False
+                if username not in username_list:
+                    print("### Wrong username ###")
+                if password not in password_list:
+                    print("### Wrong password ###")
+                continue
 
-                for row in reader:
-                    for cell in row:
-                        # username and password provided are valid
-                        if cell == username and row[1] == password:
-                            access_granted = True
-                        else:
-                            break
         except FileNotFoundError:
+
             print("Please, register if you haven't.")
             space()
             print("OR type 'menu' to go to Main Menu")
             print(FileNotFoundError())
-
-        if access_granted is False:
-            print("Wrong username or password, please try again")
-        else:
-            space()
-            print("Access granted.")
-            pause(2.1)
-            space()
-            print(f"Welcome {username}!")
-            pause(2.1)
-            space()
-            print("You are being redirected to our game menu...")
-            space()
-            pause(2.1)
-            print("Please wait...")
-            space()
-            pause(2.1)
-            game_menu(username)
 
 
 def game_menu(username):
@@ -311,10 +366,17 @@ def game_menu(username):
 
 
 def play(username):
-    """
-    Game logic function, get a random word and set a secret word
-    Add guessed letters to a set so it only displays it just once
-    While number of lives > 0 or the word is guessed  will loop.
+    """ Hangman game logic.
+
+    :param: username - used to format text.
+
+    Function to get a random word from a word bank.
+    Set a secret word that the user has to guess.
+    The user has 7 lives/attempts to guess the secret word.
+    Already guessed letters and a graphic are displayed.
+    While number of lives > 0 or the word is guessed the game will loop.
+
+    Invoke play_again function after every iteration.
     """
     clear()
     print_header("hangman")  # prints the hangman header
@@ -379,8 +441,12 @@ def play(username):
 
 
 def play_again(username):
-    """
-    Prompt user if would like to play another round
+    """ Get user input whether the user wants to play again or not.
+
+    :param: username - used to format text.
+
+    Function to get user input asking for Yes or No and 
+    invoking the correct function depending on user response.
     """
     space()
     another_round = get_user_input("Would you like to play again : Y / N \n")\
@@ -398,8 +464,12 @@ def play_again(username):
 
 
 def main_menu():
-    """
-    Main menu, register and login.
+    """ Main menu with user choices.
+
+    1. To invoke 'register' function.
+    2. To invoke 'login' function.
+    3. To invoke 'quit' function.
+
     """
     clear()
     print_header("main")
